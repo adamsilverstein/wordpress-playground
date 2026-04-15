@@ -27,10 +27,10 @@ import { randomSiteName } from './random-site-name';
 import { persistTemporarySite } from './persist-temporary-site';
 import { selectClientBySiteSlug } from './slice-clients';
 import type { PlaygroundClient } from '@wp-playground/remote';
-import type { SupportedPHPVersion } from '@php-wasm/universal';
+import type { AllPHPVersion } from '@php-wasm/universal';
 
 export interface SiteSettings {
-	phpVersion?: SupportedPHPVersion;
+	phpVersion?: AllPHPVersion;
 	wpVersion?: string;
 	networking?: boolean;
 	language?: string;
@@ -51,7 +51,7 @@ export interface PlaygroundSitesAPI {
 		name?: string,
 		localFsHandle?: FileSystemDirectoryHandle
 	): Promise<{ slug: string; storage: string }>;
-	setPhpVersion(version: SupportedPHPVersion): Promise<void>;
+	setPhpVersion(version: AllPHPVersion): Promise<void>;
 	setNetworking(enabled: boolean): Promise<void>;
 	delete(siteSlug: string): Promise<void>;
 	setActiveSite(siteSlug: string): Promise<void>;
@@ -172,7 +172,7 @@ export function createSitesAPI(
 			return { slug: site.slug, storage };
 		},
 
-		async setPhpVersion(version: SupportedPHPVersion) {
+		async setPhpVersion(version: AllPHPVersion) {
 			const site = getActiveSiteOrThrow();
 			if (site.metadata.storage === 'none') {
 				throw new Error(
